@@ -1,17 +1,9 @@
-def increment(state,key,val):
-    return {key:int(state[key]) + int(val)}
-def decrement(state,key,val):
-    return {key:int(state[key]) - int(val)}
-def newkey(state,key,val):
-    return {key:val}
-def thursday(state,key,val):
-    return "thursday"
-def friday(state,key,val):
-    return "friday"
-def saturday(state,key,val):
-    return "saturday"
-def sunday(state,key,val):
-    return "sunday"
+def increment(state,payload):
+    return {**state,"counter":int(state["counter"]) + 1 }
+def decrement(state,payload):
+    return {**state,"counter":int(state["counter"]) - 1 }
+def newkey(state,payload):
+    return {**state,**payload}
 def default(state,key,val):
     return state
 
@@ -19,13 +11,18 @@ switcher = {
     "INCREMENT": increment,
     "DECREMENT": decrement,
     "NEWKEY": newkey,
-    4: thursday,
-    5: friday,
-    6: saturday,
-    7: sunday
     }
 
-def switch(method,state,key,val):
-    return switcher.get(method, default)(state,key,val)
+def reducer(state,action):
+    #print(state,action["name"],action["payload"])
+    return switcher.get(action["name"], default)(state,action["payload"])
 
-#print(switch("NEWKEY",{"one":20,"two":2}, "dupa", {"Kupa":[1,2,3]}))
+#print(reducer("NEWKEY",{"one":20,"two":2}, "dupa", {"Kupa":[1,2,3]}))
+
+testObj = {"counter":1,"two":"two"}
+testPayload = {"name":"NEWKEY","payload":{"dupa":"dupa"}}
+testInc = {"name":"INCREMENT","payload":{}}
+testDec = {"name":"DECREMENT","payload":{}}
+#print(reducer(testObj,testPayload))
+#print(reducer(testObj,testInc))
+#print(reducer(testObj,testDec))

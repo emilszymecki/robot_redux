@@ -14,12 +14,23 @@ ${my_variable}      ${{ round(random.random()) }}
 *** Test Cases ***
 Example
     Log to console    Executing!
-    ${dict}=    Create Dictionary    key=key    one=1
+    ${dict}=    Create Dictionary    key=key    counter=1
+
     createState    ${dict}
+    Dispatch Action    INCREMENT
+    Dispatch Action    INCREMENT
+    Dispatch Action    INCREMENT
+    Dispatch Action    DECREMENT
     #${xxx}=    getState
-    dispatch    method=INCREMENT    key=one    val=2
-    dispatch    method=NEWKEY    key=random    val=${my_variable}
+    #dispatch    name=NEWKEY    payload={"dupa":"dupa"}
     #dispatch    type=INCREMENT    one=2
     ${xxx}=    getState
     Log    ${STORE}
+
+*** Keywords ***
+Dispatch Action
+    [Arguments]    ${name}
+    &{payload}=    Create Dictionary
+    &{action}=    Create Dictionary    name=${name}    payload=&{payload}
+    dispatch    ${action}
 
