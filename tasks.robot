@@ -15,12 +15,15 @@ ${my_variable}      ${{ round(random.random()) }}
 Example
     Log to console    Executing!
     ${dict}=    Create Dictionary    key=key    counter=1
-
     createState    ${dict}
+
+    ${newkey}=    Create Dictionary    dupa="Dupa"
+
     Dispatch Action    INCREMENT
     Dispatch Action    INCREMENT
     Dispatch Action    INCREMENT
     Dispatch Action    DECREMENT
+    Dispatch Action    NEWKEY    ${newkey}
     #${xxx}=    getState
     #dispatch    name=NEWKEY    payload={"dupa":"dupa"}
     #dispatch    type=INCREMENT    one=2
@@ -29,8 +32,7 @@ Example
 
 *** Keywords ***
 Dispatch Action
-    [Arguments]    ${name}
-    &{payload}=    Create Dictionary
-    &{action}=    Create Dictionary    name=${name}    payload=&{payload}
+    [Arguments]    ${name}    ${payload}={}
+    &{action}=    Create Dictionary    name=${name}    payload=${payload}
     dispatch    ${action}
 
